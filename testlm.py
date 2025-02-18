@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 import time
 import random
@@ -26,7 +25,7 @@ ADJACENCY = {
     "d2": ["b2", "f2", "d1", "d3"],
     "f2": ["d2", "f4"],
     "c3": ["d3", "c4"],
-    "d3": ["c3", "e3", "d2", "d5"],
+    "d3": ["c3", "e3", "d2"],
     "e3": ["d3", "e4"],
     "a4": ["a1", "a7", "b4"],
     "b4": ["a4", "c4", "b2", "b6"],
@@ -41,7 +40,7 @@ ADJACENCY = {
     "d6": ["b6", "f6", "d7", "d5"],
     "f6": ["d6", "f4"],
     "c5": ["c4", "d5"],
-    "d5": ["c5", "e5", "d6", "d3"],
+    "d5": ["c5", "e5", "d6"],
     "e5": ["d5", "e4"]
 }
 
@@ -181,31 +180,6 @@ def is_terminal(state):
     if state["mill_counter"] >= 20:
         return True
     return False
-
-def evaluate(state, player):
-    opponent = "blue" if player == "orange" else "orange"
-    
-    if is_terminal(state):
-        if count_board_pieces(state, player) + state["hand"][player] < 3 or not generate_moves(state, player):
-            return -10000
-        if count_board_pieces(state, opponent) + state["hand"][opponent] < 3 or not generate_moves(state, opponent):
-            return 10000
-        return 0
-
-    my_pieces = count_board_pieces(state, player) + state["hand"][player]
-    opp_pieces = count_board_pieces(state, opponent) + state["hand"][opponent]
-    material = 100 * (my_pieces - opp_pieces)
-
-    my_moves = len(generate_moves(state, player))
-    opp_moves = len(generate_moves(state, opponent))
-    mobility = 10 * (my_moves - opp_moves)
-
-    strategic_positions = {"d2", "d6", "b4", "f4"}
-    my_control = sum(1 for pos in strategic_positions if state["board"].get(pos) == player)
-    opp_control = sum(1 for pos in strategic_positions if state["board"].get(pos) == opponent)
-    control = 20 * (my_control - opp_control)
-
-    return material + mobility + control
 
 def get_random_move(state, player):
     legal_moves = generate_moves(state, state["turn"])

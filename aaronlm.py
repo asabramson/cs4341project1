@@ -204,15 +204,16 @@ def is_terminal(state):
 def evaluate(state, player):
     opponent = "blue" if player == "orange" else "orange"
     
+    # Terminal state evaluation
     if is_terminal(state):
-        if count_board_pieces(state, player) + state["hand"][player] < 3 or not generate_moves(state, player):
+        if count_board_pieces(state, player) + state["hand"].get(player, 0) < 3 or not generate_moves(state, player):
             return -10000
-        if count_board_pieces(state, opponent) + state["hand"][opponent] < 3 or not generate_moves(state, opponent):
+        if count_board_pieces(state, opponent) + state["hand"].get(opponent, 0) < 3 or not generate_moves(state, opponent):
             return 10000
         return 0
 
-    my_pieces = count_board_pieces(state, player) + state["hand"][player]
-    opp_pieces = count_board_pieces(state, opponent) + state["hand"][opponent]
+    my_pieces = count_board_pieces(state, player) + state["hand"].get(player, 0)
+    opp_pieces = count_board_pieces(state, opponent) + state["hand"].get(opponent, 0)
     material = 100 * (my_pieces - opp_pieces)
 
     my_moves = len(generate_moves(state, player))

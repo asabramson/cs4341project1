@@ -18,6 +18,7 @@ VALID_SPACES = [
     "a7", "d7", "g7"     
 ]
 
+# Adjacency list for each position on the board
 ADJACENCY = {
     "a1": ["d1", "a4"],
     "d1": ["a1", "g1", "d2"],
@@ -65,6 +66,7 @@ MILLS = [
     ["e4", "f4", "g4"]
 ]
 
+# Flag for immediate mode evaluation
 IMMEDIATE_MODE = False
 
 # Debugging to separate file to not confuse referee in stdout
@@ -72,8 +74,6 @@ IMMEDIATE_MODE = False
 def log_debug(message):
     with open("randomdebug.txt", "a") as f:
         f.write(message + "\n")
-
-
 
 # Initialize the initial state
 def initial_state():
@@ -94,6 +94,7 @@ def forms_mill(board, pos, color):
                     return True
     return False
 
+# Checks if a move blocks an opponent's mill
 def blocks_mill(board, pos, opp_color):
     for mill in MILLS:
         if pos in mill:
@@ -116,12 +117,12 @@ def get_mill_removals(state, opponent_color):
 def copy_state(state):
     return copy.deepcopy(state)
 
+# Switch the turn in the state
 def change_turn(state):
-    """Switch the turn in the state."""
     state["turn"] = "blue" if state["turn"] == "orange" else "orange"
 
+# Counts how many pieces of a given color are on the board
 def count_board_pieces(state, color):
-    """Counts how many pieces of a given color are on the board."""
     return sum(1 for occ in state["board"].values() if occ == color)
 
 # Generates every possible legal move from current state for player 'color'
@@ -321,7 +322,6 @@ def move_to_string(move, player_color):
     if source == "h":
         source = "h1" if player_color == "blue" else "h2"
     return f"{source} {dest} {removal}"
-
 
 def main():
     # Read initial color

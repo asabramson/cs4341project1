@@ -18,6 +18,7 @@ VALID_SPACES = [
     "a7", "d7", "g7"     
 ]
 
+# Adjacency list for each position on the board
 ADJACENCY = {
     "a1": ["d1", "a4"],
     "d1": ["a1", "g1", "d2"],
@@ -70,8 +71,6 @@ MILLS = [
 def log_debug(message):
     with open("aarondebug.txt", "a") as f:
         f.write(message + "\n")
-
-
 
 # Initialize the initial state
 def initial_state():
@@ -291,7 +290,6 @@ def move_to_string(move, player_color):
     if source == "h":
         source = "h1" if player_color == "blue" else "h2"
     return f"{source} {dest} {removal}"
-
 
 def main():
     # Read initial color

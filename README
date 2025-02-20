@@ -7,7 +7,7 @@ a. Project Member Responsibilities
 ____________________________________________________________________________________________________________________
 b. Running Instructions
     1. First, compile the program file jd.py with _. //TODO command here
-    2. Next run the referee program (https://github.com/jake-molnia/CS4341-referee) with the JD AI by running the command "cs4341-referee __" //TODO enter the right command
+    2. Next run the referee program (https://github.com/jake-molnia/CS4341-referee) with the JD AI by running the command "cs4341-referee laskermorris -p1 "python jd.py" -p2 "python jd.py" --visual"
     - Alternate game configurations can be setup using the different commands detailed in the ref's README
 ____________________________________________________________________________________________________________________
 c. Utility Function

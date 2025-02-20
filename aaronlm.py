@@ -102,12 +102,7 @@ def get_mill_removals(state, opponent_color):
 
 # Make a copy of the board to test moves on
 def copy_state(state):
-    return {
-        "board": state["board"].copy(),
-        "hand": state["hand"].copy(),
-        "mill_counter": state["mill_counter"],
-        "turn": state["turn"]
-    }
+    return copy.deepcopy(state)
 
 def change_turn(state):
     """Switch the turn in the state."""
@@ -201,7 +196,7 @@ def is_terminal(state):
     return False
 
 # Heuristic evaluation (STILL IN PROGRESS DECIDING VALUES)
-def evaluate(state, player):
+def evaluate(state, player, is_root):
     opponent = "blue" if player == "orange" else "orange"
     
     if is_terminal(state):
@@ -211,9 +206,9 @@ def evaluate(state, player):
             return 10000
         return 0
 
-    my_pieces = count_board_pieces(state, player) + state["hand"][player]
-    opp_pieces = count_board_pieces(state, opponent) + state["hand"][opponent]
-    material = 100 * (my_pieces - opp_pieces)
+    my_pieces_left = count_board_pieces(state, player) + state["hand"][player]
+    opp_pieces_left = count_board_pieces(state, opponent) + state["hand"][opponent]
+    material = 100 * (my_pieces_left - opp_pieces_left)
 
     my_moves = len(generate_moves(state, player))
     opp_moves = len(generate_moves(state, opponent))
@@ -229,10 +224,10 @@ def evaluate(state, player):
 # Minimax with alpha beta pruning applied at a specific depth
 def alphabeta(state, depth, alpha, beta, maximizing_player, player, start_time, is_root=False):
     if time.time() - start_time > TIME_LIMIT * 0.95:
-        return evaluate(state, player), None
+        return evaluate(state, player, is_root), None
 
     if depth == 0 or is_terminal(state):
-        return evaluate(state, player), None
+        return evaluate(state, player, is_root), None
 
     if is_root:
         legal_moves = generate_moves(state, player)

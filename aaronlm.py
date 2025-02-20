@@ -207,15 +207,9 @@ def evaluate(state, player, is_root):
             return 10000
         return 0
 
-<<<<<<< HEAD
-    my_pieces = count_board_pieces(state, player) + state["hand"].get(player, 0)
-    opp_pieces = count_board_pieces(state, opponent) + state["hand"].get(opponent, 0)
-    material = 100 * (my_pieces - opp_pieces)
-=======
     my_pieces_left = count_board_pieces(state, player) + state["hand"][player]
     opp_pieces_left = count_board_pieces(state, opponent) + state["hand"][opponent]
     material = 100 * (my_pieces_left - opp_pieces_left)
->>>>>>> f9ce75cc75f871f9ddf341052de9bc7bf2e63ff0
 
     my_moves = len(generate_moves(state, player))
     opp_moves = len(generate_moves(state, opponent))

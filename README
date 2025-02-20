@@ -1,0 +1,28 @@
+Project by Aaron Abramson, Michael Conroy, and Peter Czepiel
+
+a. Project Member Responsibilities
+    Aaron: Provided initial code base of lasker morris rules with Part 1 algorithm. Continued to debug program.
+    Michael: Offered debugging assistance, began expanding heuristic functionality for this and future for Part 3 and provided documentation.
+    Peter: Offered debugging assistance, expanded heusristic functions, and provided documentation
+____________________________________________________________________________________________________________________
+b. Running Instructions
+    1. First, compile the program file jd.py with _. //TODO command here
+    2. Next run the referee program (https://github.com/jake-molnia/CS4341-referee) with the JD AI by running the command "cs4341-referee __" //TODO enter the right command
+    - Alternate game configurations can be setup using the different commands detailed in the ref's README
+____________________________________________________________________________________________________________________
+c. Utility Function
+    The utility function for the JD AI, contained within the 'evaluate' function, checks the total of the number of pieaces on the board and in the hands of both players in a given board configuration, and if the player has less than 3, the utility value is set to -1000. If the opponent has less than 3 pieaces, the value is 1000.
+____________________________________________________________________________________________________________________
+d. Evaluation Function
+    The evaluation function for the JD AI is the 'evaluate' function. It first checks if the current board configuration is terminal, and if so applies the utility function. If it is not, though, the board goes through a series of heuristic checks to give it a heuristic point value. 
+____________________________________________________________________________________________________________________
+e. Heuristic Checks
+    Point allocations for the evaluation function are as follows: 100 points per number of pieces, 10 points per number of moves, and 20 points per number of pieces in 'strategic positions' (d2, d6, b4, f4, with adjacent spots in all directions). Each of these then has the same value from the opponent substracted, so the total score reflects the player's strategic advantage over the opponent. Above all of these though is a board in which a mill was just created by the player, which is ranked highest.
+____________________________________________________________________________________________________________________
+f. Results
+    a. Tests
+        The testing done for the JD AI was __. //TODO Add what testing was done here
+    b. Strengths and Weaknesses
+        Some of the stronger aspects of the JD program are ___. //TODO Add specific strengths
+        Some of the weaker aspects of the JD AI are ___. //TODO Add specific weaknesses
+        Our group already has plans for ways to improve JD for further use, with continued development into different additions to the heuristic functions to reflect more thorough and advanced strategies.

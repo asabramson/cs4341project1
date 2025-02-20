@@ -1,1 +1,0 @@
-Project by Aaron Abramson, Michael Conroy, and Peter Czepiel

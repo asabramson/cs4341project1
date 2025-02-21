@@ -217,15 +217,6 @@ def evaluate(state, player, is_root):
     board = state["board"]
     move_played = state["move_played"]
     score = 0
-    
-    if IMMEDIATE_MODE:
-        if forms_mill(board, move_played, player):
-            log_debug("-----------------TEST MOVE FORMED MILL------------- {}".format(move_played))
-            return 10002
-        
-        if blocks_mill(board, move_played, opponent):
-            log_debug("-----------------TEST MOVE BLOCKED MILL------------- {}".format(move_played))
-            return 10001
 
     if is_terminal(state):
         if count_board_pieces(state, player) + state["hand"][player] < 3 or not generate_moves(state, player):
@@ -233,6 +224,13 @@ def evaluate(state, player, is_root):
         if count_board_pieces(state, opponent) + state["hand"][opponent] < 3 or not generate_moves(state, opponent):
             return 10000
         return 0
+    
+    if IMMEDIATE_MODE:
+        if forms_mill(board, move_played, player):
+            score += 5000
+        
+        if blocks_mill(board, move_played, opponent):
+            score += 3000
 
     my_pieces_left = count_board_pieces(state, player) + state["hand"][player]
     opp_pieces_left = count_board_pieces(state, opponent) + state["hand"][opponent]

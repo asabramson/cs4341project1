@@ -297,7 +297,7 @@ def make_lasker_morris_rules(color):
         laskerMorrisRules += adjacent_to[:-1] # remove last comma
         laskerMorrisRules += ". "
 
-    laskerMorrisRules += "After you decide the best move, you can present the move in the following format with the quotes: ('source', 'destination', 'removal'). Source is the space that the piece is being moved from. If being placed from the hand, you can use 'h' instead of a space's coordinates. If we are the blue player, 'h1' should be used, and if we are the orange player, 'h2' should be used. Destination is the space that our piece is being moved to. Removal is the coordinates of the opponent piece that should be removed in the event that we form a mill. On turns where we do not form a mill, this should be left as 'r0' to signify no removal. Some examples of moves include: (h1 a1 r0), given we are the blue player, move a piece from our hand to space a1, do not remove an opponent piece, (h2 a1 r0), given we are the orange player, move a piece from our hand to space a1, do not remove an opponent piece, (a1 a4 r0), move a piece from a1 to a4, do not remove an opponent piece, (a4 a7 b2), given we form a mill from this move, move a piece from a4 to a7 and remove an opponent piece from b2. When outputting the best move, try to only output the move with as little else as possible so that the move can be processed as quickly as possible. Please be aware that d4 is not a valid space, please do not place it there. "
+    laskerMorrisRules += "After you decide the best move, you can present the move in the following format: (source, destination, removal). Source is the space that the piece is being moved from. If being placed from the hand, you can use 'h' instead of a space's coordinates. If we are the blue player, 'h1' should be used, and if we are the orange player, 'h2' should be used. Destination is the space that our piece is being moved to. Removal is the coordinates of the opponent piece that should be removed in the event that we form a mill. On turns where we do not form a mill, this should be left as 'r0' to signify no removal. Some examples of moves include: (h1 a1 r0), given we are the blue player, move a piece from our hand to space a1, do not remove an opponent piece, (h2 a1 r0), given we are the orange player, move a piece from our hand to space a1, do not remove an opponent piece, (a1 a4 r0), move a piece from a1 to a4, do not remove an opponent piece, (a4 a7 b2), given we form a mill from this move, move a piece from a4 to a7 and remove an opponent piece from b2. When outputting the best move, try to only output the move with as little else as possible so that the move can be processed as quickly as possible. Make sure to have the move as the first time that you print, as the referee needs to see it before any explanation. Please be aware that d4 is not a valid space, please do not place it there. "
     laskerMorrisRules += "For this game, our player color is {} and the opponent is {}.".format(color, opponent_color)
 
     return laskerMorrisRules
@@ -325,9 +325,9 @@ def make_gemini_prompt(state, color, opp_move):
 #*
 #* @return List containing the move components (source, destination, removal), or None if not found
 def extract_move_from_gemini(response):
-    match = re.search(r'\((.*?)\)', response)
+    match = re.search(r'\(([^)]+)\)', response)
     if match:
-        return match.group(1).split()
+        return tuple(match.group(1).split())
     return None
 
 
@@ -370,7 +370,9 @@ def process_gemini_response(state, gemini_response):
     move = tuple(extract_move_from_gemini(gemini_response))
     if not move or not validate_move(state, tuple(move)):
         fallback_move = generate_fallback_random_move(state)
-        log_debug("**********LLM move invalid. Using fallback move: {}".format(fallback_move))
+        log_debug("**********LLM move invalid. Using fallback move: {}".format(fallback_move)) 
+        log_debug(f"Invalid move detected: {move}") 
+
         return fallback_move
     return move
 

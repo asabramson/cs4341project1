@@ -168,6 +168,7 @@ def generate_moves(state, color):
     
     # Possible moves from hand
     if pieces_in_hand > 0:
+        hand_source = "h1" if color == "blue" else "h2"  # Use h1 for blue, h2 for orange (fixes h vs h2 error)
         for pos in VALID_SPACES:
             if board[pos] is None:
                 new_board = board.copy()
@@ -176,9 +177,9 @@ def generate_moves(state, color):
                 if mill_formed:
                     removals = get_mill_removals(state, opponent_color)
                     for rem in removals:
-                        moves.append(("h", pos, rem))
+                        moves.append((hand_source, pos, rem))
                 else:
-                    moves.append(("h", pos, "r0"))
+                    moves.append((hand_source, pos, "r0"))
     
     # Possible moves from adjacent moves
     player_positions = [pos for pos, occ in board.items() if occ == color]
@@ -339,6 +340,7 @@ def extract_move_from_gemini(response):
 #* @return Boolean indicating whether the move is valid
 def validate_move(state, move):
     possible_moves = generate_moves(state, state["turn"])
+    log_debug(f"Valid moves: {possible_moves}") 
     return move in possible_moves
 
 
